@@ -191,10 +191,11 @@ stamp-names.json
 
 ### AWS構成とS3バケット構成
 
-API Gateway（REST API）
-Lambda 関数（Node.js 18以上）
-S3 バケット構成
-s3://your-bucket-name/
+- API Gateway（REST API）
+- Lambda 関数（Node.js 18以上）
+- S3 バケット構成
+  - s3://your-bucket-name/
+
 .
 ├── stamps/
 │   └── stamp-names.json
@@ -203,7 +204,7 @@ s3://your-bucket-name/
 └── user-stamps/
     └── {userId}.json
 
-権限ポリシー（Lambda 実行ロール）
+- 権限ポリシー（Lambda 実行ロール）
 
 最低限、以下の権限が必要です。
 

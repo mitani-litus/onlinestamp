@@ -196,13 +196,14 @@ stamp-names.json
 - S3 バケット構成
   - s3://your-bucket-name/
 
-.
+```text
 ├── stamps/
 │   └── stamp-names.json
 ├── logos/
 │   └── stamp-1.png ...
 └── user-stamps/
     └── {userId}.json
+```
 
 - 権限ポリシー（Lambda 実行ロール）
 

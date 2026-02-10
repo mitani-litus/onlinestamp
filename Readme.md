@@ -47,7 +47,7 @@ AWS（Lambda / API Gateway / S3）を用いたサーバレス構成により、�
 
 ![admin](docs/admin.png)
 
-### 管理画面
+### 統計画面
 
 ![statistics](docs/statistics.png)
 
@@ -57,6 +57,7 @@ AWS（Lambda / API Gateway / S3）を用いたサーバレス構成により、�
 
 本システムはAWSのサーバレス構成で動作します。
 
+```text
 .
 [User Browser]
 ↓
@@ -68,9 +69,11 @@ AWS（Lambda / API Gateway / S3）を用いたサーバレス構成により、�
 ├─ スタンプ設定ファイル
 ├─ ロゴ画像
 └─ ユーザースタンプデータ
+```
 
 ## ディレクトリ構成（概要）
 
+```text
 .
 ├── src/
 │ ├── index.js # メインアプリ
@@ -85,6 +88,7 @@ AWS（Lambda / API Gateway / S3）を用いたサーバレス構成により、�
 │
 ├── lambda.js # Lambdaエントリポイント
 └── README.md
+```
 
 ---
 
@@ -113,6 +117,7 @@ Lambda 実行環境に以下の環境変数を設定してください。
 ---
 
 ## セットアップ手順（ローカル実行）
+
 ### リポジトリのクローン
 
 ```bash
@@ -140,6 +145,7 @@ export BASE_URL=http://localhost:3000
 ```
 
 Windows (PowerShell)
+
 ```bash
 setx STAMP_BUCKET your-s3-bucket-name
 setx ADMIN_USER admin

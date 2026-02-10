@@ -1,0 +1,33 @@
+service: stamp-rally-app
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-northeast-1
+  timeout: 10
+  environment:
+    BASE_URL: https://c8u5pddnye.execute-api.ap-northeast-1.amazonaws.com
+    ADMIN_USER: admin
+    ADMIN_PASS: securepassword123
+    STAMP_BUCKET: stamp-rally-config
+
+functions:
+  app:
+    handler: lambda.handler
+    events:
+      - httpApi:
+          path: /
+          method: ANY
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+
+plugins:
+  - serverless-offline
+
+package:
+  exclude:
+    - .gitignore
+    - Dockerfile
+    - docker-compose.yml
+    - README.md

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title><%= stampName %> | スタンプ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/stamp.css">
+  <style>
+    /* stamp.ejs 専用スタイル */
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stamp-detail-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      animation: slideUp 0.5s ease-out;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .stamp-detail-card h1 {
+      color: #333;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      animation: bounce 0.6s ease-out;
+    }
+
+    .stamp-image-container {
+      margin: 1.5rem 0;
+      animation: pop 0.6s ease-out 0.2s both;
+    }
+
+    .stamp-image {
+      max-width: 200px;
+      width: 80%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .stamp-detail-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #667eea;
+      margin: 1.5rem 0;
+    }
+
+    .survey-notice {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      border-radius: 12px;
+      color: white;
+      animation: slideUp 0.5s ease-out 0.3s both;
+    }
+
+    .survey-notice h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+      color: white;
+    }
+
+    .survey-notice p {
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .survey-button {
+      display: inline-block;
+      background-color: white;
+      color: #f5576c;
+      padding: 0.9rem 1.8rem;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-top: 0.75rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .survey-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .countdown {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0.5rem 0;
+      color: white;
+    }
+
+    @media (max-width: 600px) {
+      .stamp-detail-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .stamp-detail-card h1 {
+        font-size: 1.5rem;
+      }
+
+      .stamp-detail-name {
+        font-size: 1.2rem;
+      }
+
+      .stamp-image {
+        max-width: 150px;
+      }
+
+      .success-icon {
+        font-size: 3rem;
+      }
+
+      .survey-notice h2 {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+  
+</head>
+<body>
+  <div class="container">
+    <div class="stamp-card">
+      <!-- 成功アイコン -->
+      <div class="success-icon">🎉</div>
+      
+      <h1>スタンプを獲得しました！</h1>
+      
+      <!-- スタンプ画像 -->
+      <div class="stamp-image-container">
+        <img src="/logos/<%= stampId %>" alt="<%= stampName %>" class="stamp-image">
+      </div>
+      
+      <div class="stamp-name"><%= stampName %></div>
+      
+      <!-- アンケート通知 -->
+      <div class="survey-notice">
+        <h2>🎁 アンケートにご協力ください</h2>
+        <p>本部のスタッフにアンケート回答完了画面を見せて景品をＧＥＴ！</p>
+        <a href="https://logoform.jp/form/iapr/59shoufes-survey" class="survey-button">
+          今すぐアンケートに回答
+        </a>
+      </div>
+      <!-- 通常のスタンプ -->
+      <a href="/my-stamps" class="action-button">
+        📋 獲得したスタンプ一覧を見る
+      </a>
+    </div>
+  </div>
+</body>
+</html>

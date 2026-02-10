@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>管理画面 - スタンプ管理</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    h1 { margin-bottom: 20px; }
+    
+    .actions {
+      margin-bottom: 20px;
+    }
+    .actions a {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: #667eea;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-right: 0.5rem;
+    }
+    .actions a:hover {
+      background: #5568d3;
+    }
+    
+    table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+    table, th, td { border: 1px solid #ccc; }
+    th, td { padding: 8px; text-align: left; vertical-align: middle; }
+    th { background: #f5f5f5; font-weight: bold; }
+    
+    .icon-cell {
+      text-align: center;
+      width: 150px; /* アイコン列の幅を固定 */
+    }
+    .icon-preview {
+      max-width: 60px; /* ★ 80px → 60px に縮小 */
+      max-height: 60px; /* ★ 80px → 60px に縮小 */
+      width: auto;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      object-fit: contain; /* 画像の比率を維持 */
+      display: block;
+      margin: 0 auto 0.5rem auto; /* 中央揃え + 下マージン */
+    }
+    .no-icon {
+      color: #999;
+      font-style: italic;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .icon-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    
+    .upload-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+      width: 100%;
+    }
+    
+    .file-input {
+      font-size: 0.75rem; /* ★ 0.85rem → 0.75rem に縮小 */
+      max-width: 140px; /* ファイル選択ボタンの最大幅 */
+    }
+    
+    .btn {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem; /* ★ 0.85rem → 0.8rem に縮小 */
+      transition: background 0.3s;
+      white-space: nowrap;
+    }
+    
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #5568d3;
+    }
+    
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+    .btn-danger:hover {
+      background: #c82333;
+    }
+    
+    .qr-code {
+      max-width: 100px; /* ★ QRコードも少し小さく */
+      height: auto;
+    }
+    
+    /* IDとハッシュ列の幅制限 */
+    .id-cell {
+      max-width: 80px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 0.8rem;
+    }
+    
+    .hash-cell {
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 0.8rem;
+    }
+    
+    form { margin-top: 20px; }
+    input[type="text"] { padding: 6px; width: 250px; }
+    input[type="submit"] { padding: 6px 12px; }
+    
+    /* レスポンシブ対応 */
+    @media (max-width: 1024px) {
+      .icon-preview {
+        max-width: 50px;
+        max-height: 50px;
+      }
+      .qr-code {
+        max-width: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>スタンプ管理</h1>
+
+  <h2>登録済みスタンプ</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>スタンプ名（スタンプリンク）</th>
+        <th>ハッシュ</th>
+        <th>QRコード</th>
+        <th>アイコン</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% Object.keys(stamps).forEach(function(id) { %>
+        <tr>
+          <td><%= id %></td>
+          <td><a href="/stamp/<%= stamps[id].hash %>"><%= stamps[id].name %></a></td>
+          <td><%= stamps[id].hash %></td>
+          <td class="icon-cell">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=<%= baseUrl %>/stamp/<%= stamps[id].hash %>" alt="QRコード" class="qr-code">
+          </td>
+          <td class="icon-cell">
+            <div class="icon-actions">
+              <!-- アイコン表示 -->
+              <% if (stamps[id].logo) { %>
+                <img src="/logos/<%= id %>" alt="<%= stamps[id].name %>" class="icon-preview">
+                <!-- 削除ボタン -->
+                <form method="POST" action="/admin/delete-icon/<%= id %>" style="margin: 0;">
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('このアイコンを削除しますか？')">削除</button>
+                </form>
+              <% } else { %>
+                <span class="no-icon">未設定</span>
+              <% } %>
+              
+              <!-- アップロードフォーム -->
+              <form method="POST" action="/admin/upload-icon/<%= id %>" enctype="multipart/form-data" class="upload-form">
+                <input type="file" name="icon" accept="image/*" required class="file-input">
+                <button type="submit" class="btn btn-primary">
+                  <%= stamps[id].logo ? '変更' : 'アップロード' %>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <h2>新しいスタンプを追加</h2>
+  <form method="POST" action="/admin/add-stamp">
+    <label for="name">スタンプ名: </label>
+    <input type="text" name="name" id="name" required>
+    <input type="submit" value="追加">
+  </form>
+
+  <h2>統計</h2>
+
+    <a href="/admin/statistics" class="back-link">← 統計</a>
+
+</body>
+</html>

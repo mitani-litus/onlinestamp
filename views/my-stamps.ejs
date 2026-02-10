@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>第5９回八王子市消費生活フェスティバル</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/stamp.css">
+</head>
+<body>
+  <div class="container">
+    <!-- ヘッダー -->
+    <div class="header">
+      <h1>📋 マイスタンプラリー</h1>
+      <div class="stamp-status">
+        取得済み: <%= stamps.filter(s => s.acquired).length %> / <%= Object.keys(allStamps).length %> 個
+      </div>
+    </div>
+
+    <!-- 会場案内セクション -->
+    <div class="info-section">
+      <h2>🗺️ 会場案内マップ</h2>
+      <a href="/" class="info-link">
+        トップページで確認
+      </a>
+    </div>
+
+    <!-- スタンプ一覧 -->
+    <div class="section">
+      <div class="stamp-book">
+        <% stamps.forEach(function(stamp) { %>
+          <div class="stamp-card <%= stamp.acquired ? 'acquired' : 'locked' %>">
+            <% if (stamp.acquired) { %>
+              <img src="<%= stamp.logo %>" alt="<%= stamp.name %>">
+            <% } else { %>
+              <div class="placeholder">未取得</div>
+            <% } %>
+            <div class="stamp-name"><%= stamp.name %></div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+
+    <!-- アンケートセクション -->
+    <div class="survey-section">
+      <h2>🎁 アンケートにご協力ください</h2>
+      <p>本部のスタッフにアンケート回答完了画面を見せて景品をＧＥＴ！</p>
+      <a href="https://logoform.jp/form/iapr/59shoufes-survey" class="survey-link">
+        アンケートに回答
+      </a>
+    </div>
+  </div>
+  <!-- フッター（クレジット） -->
+  <div class="footer">
+    <div class="footer-title">🏆 Powered by</div>
+    <div class="footer-credit">
+      <strong>開発:</strong> Code for Hachioji
+    </div>
+    <div class="footer-credit">
+      <strong>環境提供:</strong> ライタス株式会社
+    </div>
+    <div class="footer-links">
+      <a href="https://www.facebook.com/code4hachioji" class="footer-link" target="_blank" rel="noopener noreferrer">Code for Hachioji</a>
+      <a href="https://litus.co.jp/" class="footer-link" target="_blank" rel="noopener noreferrer">ライタス株式会社</a>
+    </div>
+  </div>
+</body>
+</html>

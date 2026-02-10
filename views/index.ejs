@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スタンプラリー</title>
+  <link rel="stylesheet" href="/css/stamp.css">
+</head>
+<body>
+  <div class="container">
+    <!-- ヘッダー -->
+    <div class="header">
+      <h1><%= message %></h1>
+      <div class="stamp-status">
+        📌 取得済み: <%= stamps.filter(s => s.acquired).length %> / <%= Object.keys(allStamps).length %> 個
+      </div>
+    </div>
+
+    <!-- 会場マップ -->
+    <div class="map-section">
+      <h2>🗺️ 会場案内マップ</h2>
+      <div class="map-container">
+        <img src="/map" alt="会場案内マップ">
+      </div>
+    </div>
+
+    <!-- アクションボタン -->
+     
+    <div class="info-section">
+     <a href="/my-stamps" class="info-link" style="display: block; margin-bottom: 1rem;">
+      📋 取得済みスタンプを見る
+    </a>
+    </div>
+
+    <!-- 案内情報 -->
+    <div class="info-box">
+      <h3>💡 スタンプラリーの遊び方</h3>
+      <ul>
+        <li>各ブースの二次元コードを読み取ってスタンプを集めよう</li>
+        <li>５つ以上スタンプを集めてアンケートに回答したら本部のスタッフにアンケート回答完了画面を見せて景品をＧＥＴ！</li>
+      </ul>
+    </div>
+  </div>
+  <!-- フッター（クレジット） -->
+  <div class="footer">
+    <div class="footer-title">🏆 Powered by</div>
+    <div class="footer-credit">
+      <strong>開発:</strong> Code for Hachioji
+    </div>
+    <div class="footer-credit">
+      <strong>環境提供:</strong> ライタス株式会社
+    </div>
+    <div class="footer-links">
+      <a href="https://www.facebook.com/code4hachioji" class="footer-link" target="_blank" rel="noopener noreferrer">Code for Hachioji</a>
+      <a href="https://writus.co.jp/" class="footer-link" target="_blank" rel="noopener noreferrer">ライタス株式会社</a>
+    </div>
+  </div>
+</body>
+</html>

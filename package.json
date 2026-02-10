@@ -1,0 +1,28 @@
+{
+  "name": "stamp-rally",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.879.0",
+    "@vendia/serverless-express": "^4.12.6",
+    "basic-auth": "^2.0.1",
+    "cookie-parser": "^1.x",
+    "ejs": "^3.x",
+    "express": "^4.21.2",
+    "multer": "^2.0.2",
+    "qrcode": "^1.5.4",
+    "serverless-http": "^3.x",
+    "uuid": "^8.x"
+  },
+  "devDependencies": {
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "serverless-offline": "^14.4.0"
+  }
+}

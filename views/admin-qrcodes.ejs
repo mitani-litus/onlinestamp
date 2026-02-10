@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>スタンプQR管理</title></head>
+<body>
+  <h1>スタンプQRコードと名前編集</h1>
+
+  <form method="POST" action="/admin/qrcodes">
+    <ul>
+      <% qrList.forEach(function(item) { %>
+        <li>
+          <h3>スタンプ ID: <%= item.id %></h3>
+          <p>URL: <a href="<%= item.url %>"><%= item.url %></a></p>
+          <p>
+            表示名：<input type="text" name="name_<%= item.id %>" value="<%= item.name %>" />
+          </p>
+          <img src="<%= item.qr %>" alt="QR for <%= item.id %>" />
+          <hr />
+        </li>
+      <% }); %>
+    </ul>
+    <button type="submit">保存</button>
+  </form>
+</body>
+</html>

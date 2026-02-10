@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>スタンプ利用統計</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 0.5rem;
+    }
+    
+    /* 日付フィルター */
+    .filter-section {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+      border: 2px solid #667eea;
+    }
+    .filter-section h3 {
+      margin-top: 0;
+      color: #667eea;
+    }
+    .date-filter {
+      display: grid;
+      grid-template-columns: auto 1fr auto 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .date-filter label {
+      font-weight: bold;
+      color: #555;
+    }
+    .date-filter input[type="date"] {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .filter-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .filter-button {
+      padding: 0.6rem 1.2rem;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .filter-button:hover {
+      background: #5568d3;
+    }
+    .filter-button.secondary {
+      background: #6c757d;
+    }
+    .filter-button.secondary:hover {
+      background: #5a6268;
+    }
+    
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .summary-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .summary-card h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    .summary-card .value {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #667eea;
+      color: white;
+      font-weight: bold;
+    }
+    tr:hover {
+      background: #f5f5f5;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      transition: width 0.3s ease;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background: #667eea;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .back-link:hover {
+      background: #5568d3;
+    }
+    
+    @media (max-width: 768px) {
+      .date-filter {
+        grid-template-columns: 1fr;
+      }
+      .summary {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 スタンプ利用統計</h1>
+    
+    <!-- 日付フィルター -->
+    <div class="filter-section">
+      <h3>📅 期間フィルター</h3>
+      <form method="GET" action="/admin/statistics">
+        <div class="date-filter">
+          <label for="dateFrom">開始日:</label>
+          <input type="date" id="dateFrom" name="dateFrom" value="<%= dateFrom || '' %>">
+          
+          <label for="dateTo">終了日:</label>
+          <input type="date" id="dateTo" name="dateTo" value="<%= dateTo || '' %>">
+        </div>
+        
+        <div class="filter-buttons">
+          <button type="submit" class="filter-button">フィルター適用</button>
+          <button type="button" class="filter-button secondary" onclick="resetFilter()">リセット</button>
+          <button type="button" class="filter-button secondary" onclick="setToday()">今日</button>
+          <button type="button" class="filter-button secondary" onclick="setThisWeek()">今週</button>
+          <button type="button" class="filter-button secondary" onclick="setThisMonth()">今月</button>
+        </div>
+      </form>
+    </div>
+    
+    <% if (dateFrom || dateTo) { %>
+      <div style="background: #e7f3ff; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+        <strong>📌 フィルター中:</strong>
+        <%= dateFrom ? '開始: ' + dateFrom : '' %>
+        <%= (dateFrom && dateTo) ? ' ～ ' : '' %>
+        <%= dateTo ? '終了: ' + dateTo : '' %>
+      </div>
+    <% } %>
+    
+    <div class="summary">
+      <div class="summary-card">
+        <h3>総ユーザー数</h3>
+        <div class="value"><%= statistics.totalUsers %></div>
+      </div>
+      <div class="summary-card">
+        <h3>完走率</h3>
+        <div class="value"><%= statistics.completionRate %>%</div>
+      </div>
+      <div class="summary-card">
+        <h3>スタンプ種類</h3>
+        <div class="value"><%= Object.keys(allStamps).length %></div>
+      </div>
+      <div class="summary-card">
+        <h3>期間内取得数</h3>
+        <div class="value"><%= statistics.totalAcquisitions || 0 %></div>
+      </div>
+    </div>
+    
+    <h2>スタンプ別取得状況</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>スタンプ名</th>
+          <th>取得数</th>
+          <th>取得率</th>
+          <th>進捗</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% Object.keys(statistics.stampStats).forEach(stampId => { 
+          const stat = statistics.stampStats[stampId];
+        %>
+          <tr>
+            <td><%= stat.name %></td>
+            <td><%= stat.count %> 人</td>
+            <td><%= stat.percentage %>%</td>
+            <td>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: <%= stat.percentage %>%"></div>
+              </div>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    
+    <a href="/admin" class="back-link">← 管理画面に戻る</a>
+  </div>
+  
+  <script>
+    function resetFilter() {
+      window.location.href = '/admin/statistics';
+    }
+    
+    function setToday() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('dateFrom').value = today;
+      document.getElementById('dateTo').value = today;
+    }
+    
+    function setThisWeek() {
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
+      
+      document.getElementById('dateFrom').value = monday.toISOString().split('T')[0];
+      document.getElementById('dateTo').value = new Date().toISOString().split('T')[0];
+    }
+    
+    function setThisMonth() {
+      const today = new Date();
+      const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+      
+      document.getElementById('dateFrom').value = firstDay.toISOString().split('T')[0];
+      document.getElementById('dateTo').value = today.toISOString().split('T')[0];
+    }
+  </script>
+</body>
+</html>
